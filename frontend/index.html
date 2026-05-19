@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Life Changing Assistant</title>
+</head>
+<body style="font-family: Arial; padding: 20px;">
+
+<h2>Life Changing Assistant</h2>
+
+<div id="chat"></div>
+
+<input id="input" style="width: 70%;" />
+<button onclick="send()">Senden</button>
+
+<script>
+
+const API = "https://life-changing-assistant.onrender.com";
+
+async function send() {
+  const input = document.getElementById("input").value;
+
+  const res = await fetch(API, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: input })
+  });
+
+  const data = await res.json();
+
+  document.getElementById("chat").innerHTML +=
+    "<p><b>Du:</b> " + input + "</p>" +
+    "<p><b>AI:</b> " + data.response + "</p><hr>";
+}
+
+</script>
+
+</body>
+</html>
