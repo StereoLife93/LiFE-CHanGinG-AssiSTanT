@@ -33,4 +33,8 @@ def chat(req: ChatRequest):
     except Exception as e:
         return {
             "response": f"KI Fehler: {str(e)}"
+
+            @app.get("/models")
+def models():
+    return [m.name for m in genai.list_models()]
         }
