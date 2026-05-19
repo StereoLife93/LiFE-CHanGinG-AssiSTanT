@@ -15,7 +15,7 @@ app.add_middleware(
 )
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel("models/gemini-1.5-flash-latest")
+model = genai.GenerativeModel("models/gemini-2.5-flash")
 
 class ChatRequest(BaseModel):
     message: str
