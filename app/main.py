@@ -22,19 +22,14 @@ class ChatRequest(BaseModel):
 
 @app.post("/chat")
 def chat(req: ChatRequest):
-
     try:
         response = model.generate_content(req.message)
-
-        return {
-            "response": response.text
-        }
+        return {"response": response.text}
 
     except Exception as e:
-        return {
-            "response": f"KI Fehler: {str(e)}"
+        return {"response": f"KI Fehler: {str(e)}"}
 
-            @app.get("/models")
+
+@app.get("/models")
 def models():
     return [m.name for m in genai.list_models()]
-        }
