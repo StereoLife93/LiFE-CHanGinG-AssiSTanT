@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+import google.generativeai as genai
 import os
-from openai import OpenAI
 
 app = FastAPI()
 
@@ -14,7 +14,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 class ChatRequest(BaseModel):
     message: str
@@ -22,15 +24,8 @@ class ChatRequest(BaseModel):
 @app.post("/chat")
 def chat(req: ChatRequest):
 
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": "Du bist ein klarer, hilfreicher KI-Assistent."},
-            {"role": "user", "content": req.message}
-        ],
-        temperature=0.4
-    )
+    response = model.generate_content(req.message)
 
     return {
-        "response": response.choices[0].message.content
+        "response": response.text
     }
