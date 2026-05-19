@@ -15,21 +15,52 @@
 <script>
 
 const API = "https://life-changing-assistant.onrender.com/chat";
-  
+
 async function send() {
-  const input = document.getElementById("input").value;
 
-  const res = await fetch(API, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message: input })
-  });
+  const inputElement = document.getElementById("input");
+  const chat = document.getElementById("chat");
 
-  const data = await res.json();
+  const input = inputElement.value;
 
-  document.getElementById("chat").innerHTML +=
-    "<p><b>Du:</b> " + input + "</p>" +
-    "<p><b>AI:</b> " + data.response + "</p><hr>";
+  if (!input) return;
+
+  chat.innerHTML += `
+    <p><b>Du:</b> ${input}</p>
+    <p>⏳ KI denkt nach...</p>
+  `;
+
+  try {
+
+    const res = await fetch(API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: input
+      })
+    });
+
+    const data = await res.json();
+
+    chat.innerHTML += `
+      <p><b>AI:</b> ${data.response}</p>
+      <hr>
+    `;
+
+  } catch (err) {
+
+    chat.innerHTML += `
+      <p style="color:red;">
+        Fehler: Backend antwortet nicht
+      </p>
+    `;
+
+    console.error(err);
+  }
+
+  inputElement.value = "";
 }
 
 </script>
