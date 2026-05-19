@@ -24,8 +24,8 @@ class ChatRequest(BaseModel):
 def chat(req: ChatRequest):
 
     try:
-       
-prompt = f"""
+
+        prompt = f"""
 Du bist ein Life-Changing Orakel-Assistent.
 
 Arbeite in 2 Phasen:
@@ -51,7 +51,7 @@ Frage des Nutzers:
 {req.message}
 """
 
-response = model.generate_content(prompt)
+        response = model.generate_content(prompt)
 
         return {
             "response": response.text
@@ -61,7 +61,3 @@ response = model.generate_content(prompt)
         return {
             "response": f"KI Fehler: {str(e)}"
         }
-
-@app.get("/models")
-def models():
-    return [m.name for m in genai.list_models()]
